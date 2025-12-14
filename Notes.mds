@@ -1,0 +1,3 @@
+- Use a library to decode the HTML entities(he or html-entities)
+- create a new array will all answers. Randomly insert the correct_answer into the array with the incorrect_answers. Use Google/ChatGpt for help how to shuffly items in an array at random or how to insert an item Randomly into an array 
+- Limit answer choice to 1 and style selected answer: eiter(1) tack the selected answer index inside each question object, OR (2) use an HTML form w/ radio inputs using the same name attribute to automatically only allow one selection (and check Google on how to style a radio input to look like a button). 
