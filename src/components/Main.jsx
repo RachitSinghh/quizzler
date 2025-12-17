@@ -1,28 +1,27 @@
-import React from "react";
-import { useState } from "react";
-import { Data } from "../utils/data";
+import { useState, useEffect } from "react";
+
 function Main() {
-  const [quizs, setQuizs] = useState([
-    {
-      index: 1,
-      question:
-        "In the programming language Java, which of these keywords would you put on a variable to make sure it doesn't get modified?",
-      correctAnswer: "Final",
-      incorrectAnswers: ["Static", "Private", "Public"],
-    },
-    {
-      index: 2,
-      question:
-        "Which computer hardware device provides an interface for all other connected devices to communicate?",
-      correctAnswer: "Motherboard",
-      incorrectAnswers: [
-        "Central Processing Unit",
-        "Hard Disk Drive",
-        "Random Access Memory",
-      ],
-    },
-  ]);
+  const [quizs, setQuizs] = useState([]);
   const [screen, setScreen] = useState(false);
+  const getQuizAsync = async () => {
+    try {
+      const response = await fetch(
+        "https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple",
+      );
+      // console.log("Response =========", response);
+      if (response.ok) {
+        const responseJson = await response.json();
+        setQuizs(responseJson.results);
+      } else {
+        console.log("Couldn't fetch api");
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(function () {
+    getQuizAsync();
+  }, []);
 
   function handleClick() {
     setScreen((prevScreen) => !prevScreen);
@@ -49,17 +48,18 @@ function Main() {
           <p>A quick quiz to measure how well you really know your stuff.</p>
         </div>
       )}
-      <button onClick={handleClick}>Start Quiz</button>
+      {/* we have another thing to do
+
+        if we're a in intial screen the button should be "Start Quiz"
+        if we're a in a question screen button should return "check answer"
+        */}
+      {screen ? (
+        <button>Check Answer</button>
+      ) : (
+        <button onClick={handleClick}>Start Quiz</button>
+      )}
     </main>
   );
 }
 
 export default Main;
-
-// useEffect(function () {
-//   fetch(
-//     "https://opentdb.com/api.php?amount=5&category=18&difficulty=easy&type=multiple"
-//   )
-//     .then((res) => res.json())
-//     .then((data) => console.log(data));
-// }, []);
